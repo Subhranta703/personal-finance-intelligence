@@ -1,0 +1,1 @@
+import {ReactNode} from 'react';import AppShell from '../../components/AppShell';import {Toaster} from 'sonner';export default function Layout({children}:{children:ReactNode}){return <AppShell>{children}<Toaster richColors position="top-right"/></AppShell>}

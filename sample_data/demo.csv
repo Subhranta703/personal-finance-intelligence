@@ -1,0 +1,6 @@
+date,description,debit,credit,payment_method
+2026-09-01,Salary,0,45000,bank_transfer
+2026-09-02,Swiggy,450,0,upi
+2026-09-03,Amazon,1299,0,credit_card
+2026-09-04,Uber,320,0,upi
+2026-09-05,Netflix,649,0,credit_card
