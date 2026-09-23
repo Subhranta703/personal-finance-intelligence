@@ -160,33 +160,40 @@ export default function Topbar({
       const budgets = response.data || [];
 
       const alerts: Notification[] = budgets
-        .filter(
-          (budget) =>
-            budget.status === "warning" || budget.status === "over"
-        )
-        .map((budget) => {
-          const isOver = budget.status === "over";
+  .filter(
+    (budget) =>
+      budget.status === "warning" || budget.status === "over"
+  )
+  .map((budget) => {
+    const isOver = budget.status === "over";
 
-          return {
-            id: budget._id,
-            type: isOver ? "over" : "warning",
-            category: budget.category,
-            title: isOver
-              ? `${budget.category} budget exceeded`
-              : `${budget.category} budget warning`,
-            description: isOver
-              ? `You have exceeded your ${budget.category} budget by ₹${Math.max(
-                  budget.spent - budget.amount,
-                  0
-                ).toLocaleString()}`
-              : `You've used ${Math.round(
-                  budget.percentage
-                )}% of your ${budget.category} budget.`,
-            percentage: budget.percentage,
-            amount: budget.amount,
-            spent: budget.spent,
-          };
-        })
+    return {
+      id: budget._id,
+
+      type: isOver
+        ? ("over" as const)
+        : ("warning" as const),
+
+      category: budget.category,
+
+      title: isOver
+        ? `${budget.category} budget exceeded`
+        : `${budget.category} budget warning`,
+
+      description: isOver
+        ? `You have exceeded your ${budget.category} budget by ₹${Math.max(
+            budget.spent - budget.amount,
+            0
+          ).toLocaleString()}`
+        : `You've used ${Math.round(
+            budget.percentage
+          )}% of your ${budget.category} budget.`,
+
+      percentage: budget.percentage,
+      amount: budget.amount,
+      spent: budget.spent,
+    };
+  })
         .sort((a, b) => {
           /*
            * Over-budget alerts first,
