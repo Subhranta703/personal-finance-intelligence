@@ -89,42 +89,79 @@ export default function AppShell({ children }: { children: ReactNode }) {
       <Sidebar />
 
       <div className="flex-1 min-w-0">
-        <Topbar user={user} onLogout={logout} />
+        <Topbar
+  user={user}
+  onLogout={logout}
+  onMenu={() => setMenu(true)}
+/>
 
         {menu && (
-          <div
-            className="md:hidden fixed inset-0 z-50 bg-black/40"
-            onClick={() => setMenu(false)}
-          >
-            <div
-              className="w-72 h-full bg-[var(--surface)] p-5"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="font-bold text-lg mb-6">FinSight</div>
-
-              {[
-                "dashboard",
-                "transactions",
-                "budgets",
-                "subscriptions",
-                "insights",
-                "forecast",
-                "reports",
-                "assistant",
-                "settings",
-              ].map((x) => (
-                <Link
-                  key={x}
-                  href={`/${x}`}
-                  onClick={() => setMenu(false)}
-                  className="block py-3 capitalize text-[var(--muted)] hover:text-[var(--text)]"
-                >
-                  {x}
-                </Link>
-              ))}
-            </div>
+  <div
+    className="md:hidden fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm"
+    onClick={() => setMenu(false)}
+  >
+    <div
+      className="w-72 max-w-[85vw] h-full bg-[var(--surface)] border-r border-[var(--border)] shadow-2xl p-5 animate-[slideIn_0.2s_ease-out]"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-2">
+          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 grid place-items-center text-white font-black">
+            F
           </div>
-        )}
+
+          <span className="font-bold text-lg">
+            FinSight
+          </span>
+        </div>
+
+        <button
+          onClick={() => setMenu(false)}
+          className="h-9 w-9 rounded-lg grid place-items-center hover:bg-[var(--surface2)]"
+          aria-label="Close menu"
+        >
+          ✕
+        </button>
+      </div>
+
+      {/* Navigation */}
+      <nav className="space-y-1">
+        {[
+          "dashboard",
+          "transactions",
+          "budgets",
+          "subscriptions",
+          "insights",
+          "forecast",
+          "reports",
+          "assistant",
+          "settings",
+        ].map((x) => {
+          const href = `/${x}`;
+          const active =
+            pathname === href ||
+            pathname.startsWith(`${href}/`);
+
+          return (
+            <Link
+              key={x}
+              href={href}
+              onClick={() => setMenu(false)}
+              className={`block px-4 py-3 rounded-xl capitalize text-sm font-medium transition ${
+                active
+                  ? "bg-indigo-500/10 text-indigo-500"
+                  : "text-[var(--muted)] hover:text-[var(--text)] hover:bg-[var(--surface2)]"
+              }`}
+            >
+              {x}
+            </Link>
+          );
+        })}
+      </nav>
+    </div>
+  </div>
+)}
 
         <main className="px-4 md:px-7 py-6 pb-24 md:pb-8 max-w-[1600px] mx-auto">
           {children}
